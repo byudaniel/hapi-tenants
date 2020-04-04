@@ -6,6 +6,8 @@ module.exports = {
   name: 'hapiTenants',
   version: '0.1.0',
   register: async function (server, { tenantResources = {} }) {
+    server.decorate('request', 'tenantStore', localStore)
+
     server.ext({
       type: 'onRequest',
       method: function (request, h) {

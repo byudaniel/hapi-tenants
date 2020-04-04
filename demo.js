@@ -29,8 +29,7 @@ const init = async () => {
     method: 'POST',
     path: '/save',
     handler: async (request, h) => {
-      const store = localStore.getStore()
-      const db = store.get('db')
+      const db = localStore.get('db')
       const result = await db.save()
       return result
     },

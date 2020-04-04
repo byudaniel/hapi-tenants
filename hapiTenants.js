@@ -9,8 +9,8 @@ module.exports = {
     server.ext({
       type: 'onRequest',
       method: function (request, h) {
-        localStore.enterWith(new Map())
-        const store = localStore.getStore()
+        localStore.asyncLocalStorage.enterWith(new Map())
+        const store = localStore.asyncLocalStorage.getStore()
         const tenantId = request.headers['tenant-id']
 
         if (tenantId) {

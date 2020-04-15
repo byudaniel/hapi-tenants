@@ -3,8 +3,8 @@ const localStore = require('./localStore')
 
 module.exports = {
   name: 'hapiTenants',
-  version: '0.1.0',
-  register: async function (server, { domainMappings = {}, log }) {
+  version: '0.2.0',
+  register: async function (server, { hostMappings = {}, log }) {
     server.ext({
       type: 'onRequest',
       method: function (request, h) {
@@ -14,15 +14,13 @@ module.exports = {
         let tenantId = request.headers['tenant-id']
 
         if (!tenantId) {
-          const refererDomain = url.parse(request.headers.referer).domain
+          const refererHost = url.parse(request.headers.referer).host
 
-          const matchingDomainKey = Object.keys(domainMappings).find((domain) =>
-            refererDomain.includes(domain)
+          const matchingHostKey = Object.keys(hostMappings).find((host) =>
+            refererHost.includes(host)
           )
 
-          if (matchingDomainKey) {
-            tenantId = domainMappings[tenantId]
-          }
+          tenantId = hostMappings[matchingHostKey]
         }
 
         if (tenantId) {

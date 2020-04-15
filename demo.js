@@ -1,5 +1,5 @@
 const Hapi = require('@hapi/hapi')
-const localStore = require('./localStore')
+const hapiTenants = require('./')
 
 const dbs = {
   '1234': { save: () => 'Saved to db 1234' },
@@ -18,18 +18,14 @@ const init = async () => {
 
   await server.register({
     plugin: require('./hapiTenants'),
-    options: {
-      tenantResources: {
-        db: (tenantId) => getDb(tenantId),
-      },
-    },
+    options: {},
   })
 
   server.route({
     method: 'POST',
     path: '/save',
     handler: async (request, h) => {
-      const db = localStore.get('db')
+      const db = dbs[hapiTenants.getTenantId()]
       const result = await db.save()
       return result
     },

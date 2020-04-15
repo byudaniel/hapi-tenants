@@ -1,25 +1,39 @@
+const url = require('url')
 const localStore = require('./localStore')
-
-const kTenant = 'TENANT_ID'
 
 module.exports = {
   name: 'hapiTenants',
   version: '0.1.0',
-  register: async function (server, { tenantResources = {} }) {
-    server.decorate('request', 'tenantStore', localStore)
-
+  register: async function (server, { domainMappings = {}, log }) {
     server.ext({
       type: 'onRequest',
       method: function (request, h) {
-        localStore.asyncLocalStorage.enterWith(new Map())
-        const store = localStore.asyncLocalStorage.getStore()
-        const tenantId = request.headers['tenant-id']
+        // Setup store for current request
+        localStore.enter()
+
+        let tenantId = request.headers['tenant-id']
+
+        if (!tenantId) {
+          const refererDomain = url.parse(request.headers.referer).domain
+
+          const matchingDomainKey = Object.keys(domainMappings).find((domain) =>
+            refererDomain.includes(domain)
+          )
+
+          if (matchingDomainKey) {
+            tenantId = domainMappings[tenantId]
+          }
+        }
 
         if (tenantId) {
-          store.set(kTenant, tenantId)
-          Object.entries(tenantResources).forEach(([key, resourceSelector]) => {
-            store.set(key, resourceSelector(tenantId))
-          })
+          localStore.setTenantId(tenantId)
+        }
+
+        if (!tenantId && log) {
+          log.error(
+            { referer: request.headers.referer, requestUrl: request.url.path },
+            'Tenant could not be found from request'
+          )
         }
 
         return h.continue

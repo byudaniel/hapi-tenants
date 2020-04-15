@@ -2,8 +2,11 @@ const { AsyncLocalStorage } = require('async_hooks')
 
 const asyncLocalStorage = new AsyncLocalStorage()
 
+const kTenant = 'TENANT_ID'
+
 module.exports = {
-  asyncLocalStorage,
-  get: (key) => asyncLocalStorage.getStore().get(key),
-  set: (key, value) => asyncLocalStorage.getStore().set(key, value),
+  enter: () => asyncLocalStorage.enterWith(new Map()),
+  getTenantId: () => asyncLocalStorage.getStore().get(key),
+  setTenantId: (tenantId) =>
+    asyncLocalStorage.getStore().set(kTenant, tenantId),
 }

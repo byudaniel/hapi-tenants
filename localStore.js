@@ -6,7 +6,7 @@ const kTenant = 'TENANT_ID'
 
 module.exports = {
   enter: () => asyncLocalStorage.enterWith(new Map()),
-  getTenantId: () => asyncLocalStorage.getStore().get(key),
+  getTenantId: () => asyncLocalStorage.getStore().get(kTenant),
   setTenantId: (tenantId) =>
     asyncLocalStorage.getStore().set(kTenant, tenantId),
 }

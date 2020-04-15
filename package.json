@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@hapi/hapi": "^19.1.1"
+  "peerDependencies": {
+    "@hapi/hapi": ">= 17.9.0"
   }
 }

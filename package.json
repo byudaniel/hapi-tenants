@@ -1,6 +1,7 @@
 {
-  "name": "hapi-tenants",
+  "name": "@byudaniel/hapi-tenants",
   "version": "0.1.0",
+  "private": false,
   "description": "",
   "main": "index.js",
   "scripts": {

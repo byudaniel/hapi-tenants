@@ -14,10 +14,8 @@ module.exports = {
         let tenantId = request.headers['tenant-id']
 
         if (!tenantId) {
-          const refererHost = url.parse(request.headers.referer).host
-
           const matchingHostKey = Object.keys(hostMappings).find((host) =>
-            refererHost.includes(host)
+            requestHost.includes(request.headers.host)
           )
 
           tenantId = hostMappings[matchingHostKey]

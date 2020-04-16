@@ -3,7 +3,7 @@ const localStore = require('./localStore')
 
 module.exports = {
   name: 'hapiTenants',
-  version: '0.2.0',
+  version: '0.3.0',
   register: async function (server, { hostMappings = {}, log }) {
     server.ext({
       type: 'onRequest',

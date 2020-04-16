@@ -15,7 +15,7 @@ module.exports = {
 
         if (!tenantId) {
           const matchingHostKey = Object.keys(hostMappings).find((host) =>
-            requestHost.includes(request.headers.host)
+            request.headers.host.includes(host)
           )
 
           tenantId = hostMappings[matchingHostKey]

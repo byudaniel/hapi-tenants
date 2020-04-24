@@ -8,9 +8,6 @@ module.exports = {
     server.ext({
       type: 'onRequest',
       method: function (request, h) {
-        // Setup store for current request
-        localStore.enter()
-
         let tenantId = request.headers['tenant-id']
 
         if (!tenantId) {
@@ -22,6 +19,8 @@ module.exports = {
         }
 
         if (tenantId) {
+          // Setup store for current request
+          localStore.enter()
           localStore.setTenantId(tenantId)
         }
 
